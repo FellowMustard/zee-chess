@@ -72,23 +72,21 @@ const Chessboard = () => {
   };
 
   //When Placing Pieces
-  const placePiece = ({ event, gridX, gridY, piece }: PlacePieceProps) => {
+  const placePiece = ({ event, position, piece }: PlacePieceProps) => {
     const chessBoard = chessBoardRef.current;
     if (currPiece && chessBoard && piece) {
       const currX = Math.floor((event.clientX - chessBoard.offsetLeft) / 75);
       const currY = Math.floor((event.clientY - chessBoard.offsetTop) / 75);
 
-      if (currX - gridX === 0 && currY - gridY === 0) {
+      if (currX - position.x === 0 && currY - position.y === 0) {
         currPiece.style.position = "static";
         setCurrPiece((prevState) => (prevState = undefined));
         return;
       }
 
       const checkMove = rules.isValidMove({
-        prevX: gridX,
-        prevY: gridY,
-        currX,
-        currY,
+        previousPosition: { x: position.x, y: position.y },
+        currentPosition: { x: currX, y: currY },
         type: piece.type,
         side: piece.side,
         board: BoardData.board,
@@ -139,8 +137,8 @@ const Chessboard = () => {
       dispatch({
         type: BoardActionTypes.REMOVE_PIECE,
         payload: {
-          x: gridX,
-          y: gridY,
+          x: position.x,
+          y: position.y,
         },
       });
 
@@ -160,8 +158,7 @@ const Chessboard = () => {
             grabPiece={grabPiece}
             movePiece={movePiece}
             placePiece={placePiece}
-            gridX={tile.gridX}
-            gridY={tile.gridY}
+            position={tile.position}
             piece={tile.piece}
           />
         );

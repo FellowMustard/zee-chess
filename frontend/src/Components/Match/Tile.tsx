@@ -7,8 +7,7 @@ const Tile = ({
   grabPiece,
   movePiece,
   placePiece,
-  gridX,
-  gridY,
+  position,
   piece,
 }: TileProps) => {
   return (
@@ -17,7 +16,7 @@ const Tile = ({
       className={`chess-tile ${isWhiteTile ? "white" : "black"}`}
       onMouseDown={(e) => grabPiece(e)}
       onMouseMove={(e) => movePiece(e)}
-      onMouseUp={(event) => placePiece({ event, gridX, gridY, piece })}
+      onMouseUp={(event) => placePiece({ event, position, piece })}
     >
       {piece && (
         <div

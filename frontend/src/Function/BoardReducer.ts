@@ -32,8 +32,7 @@ export const BoardReducers = (
           boardData.push({
             tile: horiAxis[rows] + vertAxis[vertAxis.length - (cols + 1)],
             isWhiteTile: (rows + cols + 2) % 2 === 0,
-            gridX: cols,
-            gridY: rows,
+            position: { x: cols, y: rows },
             piece: pieceData
               ? {
                   image: pieceData.image,
