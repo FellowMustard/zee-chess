@@ -1,0 +1,61 @@
+*,
+*::after,
+*::before {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+  box-sizing: border-box;
+}
+body,
+html,
+*,
+.play-screen {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.play-screen {
+  background-color: #77779e;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chess-board {
+  box-sizing: border-box;
+  display: grid;
+  width: 600px;
+  height: 600px;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  box-shadow: 0px 0px 10px 10px #44475e;
+  -webkit-box-shadow: 0px 0px 10px 10px #44475e;
+  -moz-box-shadow: 0px 0px 10px 10px #44475e;
+}
+
+.chess-board .chess-tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chess-tile.black {
+  background-color: #6f788f;
+}
+.chess-tile.white {
+  background-color: #b2bcd1;
+}
+.chess-piece {
+  width: 75px;
+  height: 75px;
+  background-size: 80% 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: grab;
+}
+
+.chess-piece:active {
+  cursor: grabbing;
+}
