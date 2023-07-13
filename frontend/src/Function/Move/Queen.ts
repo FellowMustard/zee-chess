@@ -8,6 +8,7 @@ export function queenMove({
   side,
   board,
 }: ValidPieceProps) {
+  console.time("place");
   const deltaX = previousPosition.x - currentPosition.x;
   const deltaY = previousPosition.y - currentPosition.y;
   const deltaX_Abs = Math.abs(previousPosition.x - currentPosition.x);

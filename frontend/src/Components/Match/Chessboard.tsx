@@ -1,34 +1,21 @@
-import { useRef, useReducer, useEffect, useState } from "react";
-import {
-  BoardReducers,
-  INITIAL_BOARD_STATE,
-} from "../../Function/BoardReducer";
+import { useRef, useState } from "react";
 import ChessRules from "../../Function/ChessRules";
 import {
   BoardActionTypes,
   ChessTeam,
   MoveList,
-  horiAxis,
-  vertAxis,
 } from "../../Function/ChessConst";
 import Tile from "./Tile";
-import { PlacePieceProps } from "../../Function/Interface";
+import { ChessBoardProps, PlacePieceProps } from "../../Function/Interface";
 
-const Chessboard = () => {
-  const [BoardData, dispatch] = useReducer(BoardReducers, INITIAL_BOARD_STATE);
+const Chessboard = ({
+  board,
+  loading,
+  boardReducerDispatch,
+}: ChessBoardProps) => {
   const [currPiece, setCurrPiece] = useState<HTMLElement>();
   const chessBoardRef = useRef<HTMLDivElement>(null);
   const rules = new ChessRules();
-
-  useEffect(() => {
-    dispatch({
-      type: BoardActionTypes.SETUP_BOARD,
-      payload: {
-        vertAxis: vertAxis,
-        horiAxis: horiAxis,
-      },
-    });
-  }, []);
 
   //When Grabbing Piece
   const grabPiece = (e: React.MouseEvent) => {
@@ -89,7 +76,7 @@ const Chessboard = () => {
         currentPosition: { x: currX, y: currY },
         type: piece.type,
         side: piece.side,
-        board: BoardData.board,
+        board: board,
       });
 
       if (checkMove === MoveList.INVALID) {
@@ -101,55 +88,34 @@ const Chessboard = () => {
       if (checkMove === MoveList.ATTACK_ENPASSANT) {
         const enemyIndexY =
           piece.side === ChessTeam.WHITE ? currY + 1 : currY - 1;
-        dispatch({
-          type: BoardActionTypes.REMOVE_PIECE,
-          payload: {
-            x: currX,
-            y: enemyIndexY,
-          },
-        });
+        boardReducerDispatch(BoardActionTypes.REMOVE_PIECE, currX, enemyIndexY);
       }
 
-      dispatch({
-        type: BoardActionTypes.CLEAR_ENPASSANT,
-      });
+      boardReducerDispatch(BoardActionTypes.CLEAR_ENPASSANT);
 
       if (checkMove === MoveList.TRIGGER_ENPASSANT) {
-        dispatch({
-          type: BoardActionTypes.ADD_ENPASSANT,
-          payload: {
-            x: currX,
-            y: currY,
-            piece: piece,
-          },
-        });
+        boardReducerDispatch(BoardActionTypes.ADD_ENPASSANT, currX, currY);
       }
 
-      dispatch({
-        type: BoardActionTypes.ADD_PIECE,
-        payload: {
-          x: currX,
-          y: currY,
-          piece: piece,
-        },
-      });
+      boardReducerDispatch(BoardActionTypes.ADD_PIECE, currX, currY, piece);
+      boardReducerDispatch(
+        BoardActionTypes.REMOVE_PIECE,
+        position.x,
+        position.y
+      );
 
-      dispatch({
-        type: BoardActionTypes.REMOVE_PIECE,
-        payload: {
-          x: position.x,
-          y: position.y,
-        },
-      });
+      if (checkMove === MoveList.PROMOTION) {
+        console.log("promotion");
+      }
 
       currPiece.style.position = "static";
       setCurrPiece((prevState) => (prevState = undefined));
     }
   };
 
-  return !BoardData.loading ? (
+  return !loading ? (
     <div className="chess-board" ref={chessBoardRef}>
-      {BoardData.board.map((tile) => {
+      {board.map((tile) => {
         return (
           <Tile
             key={tile.tile}

@@ -11,6 +11,8 @@ export function pawnMove({
   const blocked = isBlocking({ currentPosition, board, side });
   const validEnemy = isValidEnemy({ currentPosition, board, side });
   const starterY = side === ChessTeam.WHITE ? 6 : 1;
+  const promotionY = side === ChessTeam.WHITE ? 0 : 7;
+  const promotionAvailable = promotionY === currentPosition.y;
   const firstMovePawn = starterY === previousPosition.y;
   const deltaX = previousPosition.x - currentPosition.x;
   const deltaY = previousPosition.y - currentPosition.y;
@@ -21,6 +23,7 @@ export function pawnMove({
   const isAttackingPawn = limitMovePawn && Math.abs(deltaX) === 1;
 
   if (isAttackingPawn) {
+    if (validEnemy && promotionAvailable) return MoveList.PROMOTION;
     if (validEnemy) return MoveList.ATTACK;
     if (isEnPassant({ currentPosition, board, side }))
       return MoveList.ATTACK_ENPASSANT;
@@ -28,6 +31,7 @@ export function pawnMove({
     if (deltaX !== 0) return MoveList.INVALID;
     if (blocked) return MoveList.INVALID;
     if (specialMovePawn && firstMovePawn) return MoveList.TRIGGER_ENPASSANT;
+    if (validEnemy && promotionAvailable) return MoveList.PROMOTION;
     if (limitMovePawn) return MoveList.MOVE;
   }
   return MoveList.INVALID;

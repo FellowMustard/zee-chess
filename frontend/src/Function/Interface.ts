@@ -1,4 +1,4 @@
-import { ChessTeam, ChessTypes } from "./ChessConst";
+import { BoardActionTypes, ChessTeam, ChessTypes } from "./ChessConst";
 import ChessImages from "./ChessImages";
 
 export interface BoardReducerState {
@@ -8,7 +8,7 @@ export interface BoardReducerState {
 export interface BoardContent {
   tile: string;
   isWhiteTile: boolean;
-  position: gridPosition;
+  position: GridPosition;
   piece?: PieceProps | undefined;
 }
 export interface PieceProps {
@@ -19,8 +19,18 @@ export interface PieceProps {
 }
 export interface PlacePieceProps {
   event: React.MouseEvent;
-  position: gridPosition;
+  position: GridPosition;
   piece?: PieceProps | undefined;
+}
+export interface ChessBoardProps {
+  board: Array<BoardContent>;
+  loading: boolean;
+  boardReducerDispatch: (
+    type: BoardActionTypes,
+    x?: number | undefined,
+    y?: number | undefined,
+    piece?: PieceProps | undefined
+  ) => void;
 }
 export interface TileProps {
   titleId: string;
@@ -28,24 +38,29 @@ export interface TileProps {
   grabPiece: (event: React.MouseEvent) => void;
   movePiece: (event: React.MouseEvent) => void;
   placePiece: (event: PlacePieceProps) => void;
-  position: gridPosition;
+  position: GridPosition;
   piece?: PieceProps | undefined;
 }
 export interface CheckingValidProps {
-  previousPosition: gridPosition;
-  currentPosition: gridPosition;
+  previousPosition: GridPosition;
+  currentPosition: GridPosition;
   type: ChessTypes;
   side: ChessTeam;
   board: Array<BoardContent>;
 }
 export interface ChessRulesProps {
-  currentPosition: gridPosition;
+  currentPosition: GridPosition;
   side: ChessTeam;
   board: Array<BoardContent>;
 }
 export interface ValidPieceProps extends Omit<CheckingValidProps, "type"> {}
 
-export interface gridPosition {
+export interface GridPosition {
   x: number;
   y: number;
+}
+
+export interface ModalProps {
+  show: boolean;
+  transparent: boolean;
 }
