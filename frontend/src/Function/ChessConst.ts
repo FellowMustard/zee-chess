@@ -17,6 +17,12 @@ export enum BoardActionTypes {
   REMOVE_PIECE = "REMOVE_PIECE",
   ADD_ENPASSANT = "ADD_ENPASSANT",
   CLEAR_ENPASSANT = "CLEAR_ENPASSANT",
+  PROMOTION = "PROMOTION",
+}
+
+export enum PromotionActionTypes {
+  TRIGGER_PROMOTION = "TRIGGER_PROMOTION",
+  CLEAR_PROMOTION = "CLEAR_PROMOTION",
 }
 
 export enum MoveList {

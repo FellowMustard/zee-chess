@@ -1,9 +1,21 @@
-import { BoardActionTypes, ChessTeam, ChessTypes } from "./ChessConst";
+import {
+  BoardActionTypes,
+  ChessTeam,
+  ChessTypes,
+  PromotionActionTypes,
+} from "./ChessConst";
 import ChessImages from "./ChessImages";
 
 export interface BoardReducerState {
   loading: boolean;
   board: Array<BoardContent>;
+  side: ChessTeam;
+}
+export interface PromotionReducerState {
+  show: boolean;
+  positionGrid?: GridPosition | undefined;
+  data: Array<string>;
+  side?: ChessTeam | undefined;
 }
 export interface BoardContent {
   tile: string;
@@ -17,21 +29,38 @@ export interface PieceProps {
   side: ChessTeam;
   enPassant?: boolean | undefined;
 }
+
+export interface PieceButtonProps extends PieceProps {
+  imageString: keyof typeof ChessImages;
+}
+
 export interface PlacePieceProps {
   event: React.MouseEvent;
   position: GridPosition;
   piece?: PieceProps | undefined;
 }
+
 export interface ChessBoardProps {
   board: Array<BoardContent>;
-  loading: boolean;
   boardReducerDispatch: (
     type: BoardActionTypes,
     x?: number | undefined,
     y?: number | undefined,
     piece?: PieceProps | undefined
   ) => void;
+  promotionReducerDispatch: (
+    type: PromotionActionTypes,
+    x?: number | undefined,
+    y?: number | undefined,
+    side?: ChessTeam | undefined
+  ) => void;
 }
+
+export interface ReducerAction {
+  type: BoardActionTypes | PromotionActionTypes;
+  payload?: any;
+}
+
 export interface TileProps {
   titleId: string;
   isWhiteTile: boolean;
@@ -41,6 +70,7 @@ export interface TileProps {
   position: GridPosition;
   piece?: PieceProps | undefined;
 }
+
 export interface CheckingValidProps {
   previousPosition: GridPosition;
   currentPosition: GridPosition;
@@ -48,11 +78,13 @@ export interface CheckingValidProps {
   side: ChessTeam;
   board: Array<BoardContent>;
 }
+
 export interface ChessRulesProps {
   currentPosition: GridPosition;
   side: ChessTeam;
   board: Array<BoardContent>;
 }
+
 export interface ValidPieceProps extends Omit<CheckingValidProps, "type"> {}
 
 export interface GridPosition {
@@ -63,4 +95,6 @@ export interface GridPosition {
 export interface ModalProps {
   show: boolean;
   transparent: boolean;
+  background: string;
+  children: React.ReactNode | undefined;
 }

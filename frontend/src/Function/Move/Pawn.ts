@@ -31,7 +31,7 @@ export function pawnMove({
     if (deltaX !== 0) return MoveList.INVALID;
     if (blocked) return MoveList.INVALID;
     if (specialMovePawn && firstMovePawn) return MoveList.TRIGGER_ENPASSANT;
-    if (validEnemy && promotionAvailable) return MoveList.PROMOTION;
+    if (limitMovePawn && promotionAvailable) return MoveList.PROMOTION;
     if (limitMovePawn) return MoveList.MOVE;
   }
   return MoveList.INVALID;

@@ -4,14 +4,15 @@ import {
   BoardActionTypes,
   ChessTeam,
   MoveList,
+  PromotionActionTypes,
 } from "../../Function/ChessConst";
 import Tile from "./Tile";
 import { ChessBoardProps, PlacePieceProps } from "../../Function/Interface";
 
 const Chessboard = ({
   board,
-  loading,
   boardReducerDispatch,
+  promotionReducerDispatch,
 }: ChessBoardProps) => {
   const [currPiece, setCurrPiece] = useState<HTMLElement>();
   const chessBoardRef = useRef<HTMLDivElement>(null);
@@ -105,7 +106,12 @@ const Chessboard = ({
       );
 
       if (checkMove === MoveList.PROMOTION) {
-        console.log("promotion");
+        promotionReducerDispatch(
+          PromotionActionTypes.TRIGGER_PROMOTION,
+          currX,
+          currY,
+          piece.side
+        );
       }
 
       currPiece.style.position = "static";
@@ -113,7 +119,7 @@ const Chessboard = ({
     }
   };
 
-  return !loading ? (
+  return (
     <div className="chess-board" ref={chessBoardRef}>
       {board.map((tile) => {
         return (
@@ -130,7 +136,7 @@ const Chessboard = ({
         );
       })}
     </div>
-  ) : null;
+  );
 };
 
 export default Chessboard;

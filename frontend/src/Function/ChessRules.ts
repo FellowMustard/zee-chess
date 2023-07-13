@@ -80,12 +80,6 @@ export default class ChessRules {
     return moveResult;
   }
 
-  teamSelect() {
-    const randomNum = Math.random();
-    const result = randomNum < 0.5 ? "WHITE" : "BLACK";
-    return result;
-  }
-
   checkArrayNumber(x: number, y: number) {
     return x + y * 8;
   }

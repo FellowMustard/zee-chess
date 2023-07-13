@@ -1,5 +1,5 @@
-import { BoardActionTypes } from "./ChessConst";
-import { BoardReducerState } from "./Interface";
+import { BoardActionTypes, ChessTeam } from "./ChessConst";
+import { BoardReducerState, ReducerAction } from "./Interface";
 import { pieceSetup } from "./PieceSetup";
 
 let boardData = [];
@@ -7,18 +7,19 @@ let boardData = [];
 const checkArrayNumber = (x: number, y: number) => {
   return x + y * 8;
 };
+const teamSelect = () => {
+  const randomNum = Math.random();
+  const result = randomNum < 0.5 ? ChessTeam.WHITE : ChessTeam.BLACK;
+  return result;
+};
 
 export const INITIAL_BOARD_STATE = {
   loading: true,
   board: [],
+  side: ChessTeam.WHITE,
 };
 
-export type ReducerAction = {
-  type: BoardActionTypes;
-  payload?: any;
-};
-
-export const BoardReducers = (
+export const boardReducers = (
   state: BoardReducerState,
   action: ReducerAction
 ) => {
@@ -47,6 +48,7 @@ export const BoardReducers = (
       return {
         board: boardData,
         loading: false,
+        side: teamSelect(),
       };
 
     case BoardActionTypes.ADD_PIECE:
@@ -83,6 +85,13 @@ export const BoardReducers = (
       });
 
       return { ...state, board: updatedData };
+
+    case BoardActionTypes.PROMOTION:
+      const { x: pawnX, y: pawnY, piece: promotedPiece } = action.payload;
+      boardData = [...state.board];
+      boardData[checkArrayNumber(pawnX, pawnY)].piece = promotedPiece;
+
+      return { ...state, board: boardData };
 
     default:
       return state;
