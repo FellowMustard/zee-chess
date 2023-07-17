@@ -21,6 +21,7 @@ export interface BoardContent {
   tile: string;
   isWhiteTile: boolean;
   position: GridPosition;
+  preview: boolean;
   piece?: PieceProps | undefined;
 }
 export interface PieceProps {
@@ -34,7 +35,7 @@ export interface PieceButtonProps extends PieceProps {
   imageString: keyof typeof ChessImages;
 }
 
-export interface PlacePieceProps {
+export interface InteractPieceProps {
   event: React.MouseEvent;
   position: GridPosition;
   piece?: PieceProps | undefined;
@@ -64,10 +65,11 @@ export interface ReducerAction {
 export interface TileProps {
   titleId: string;
   isWhiteTile: boolean;
-  grabPiece: (event: React.MouseEvent) => void;
+  grabPiece: (event: InteractPieceProps) => void;
   movePiece: (event: React.MouseEvent) => void;
-  placePiece: (event: PlacePieceProps) => void;
+  placePiece: (event: InteractPieceProps) => void;
   position: GridPosition;
+  preview: boolean;
   piece?: PieceProps | undefined;
 }
 

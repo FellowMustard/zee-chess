@@ -1,12 +1,23 @@
 import { ChessTypes, MoveList } from "./ChessConst";
-import { CheckingValidProps } from "./Interface";
+import {
+  BoardContent,
+  CheckingValidProps,
+  GridPosition,
+  PieceProps,
+} from "./Interface";
 import {
   bishopMove,
+  bishopPreview,
   kingMove,
+  kingPreview,
   knightMove,
+  knightPreview,
   pawnMove,
+  pawnPreview,
   queenMove,
+  queenPreview,
   rookMove,
+  rookPreview,
 } from "./Move/Index";
 
 export default class ChessRules {
@@ -82,5 +93,26 @@ export default class ChessRules {
 
   checkArrayNumber(x: number, y: number) {
     return x + y * 8;
+  }
+
+  previewMoves(
+    position: GridPosition,
+    piece: PieceProps,
+    board: Array<BoardContent>
+  ): GridPosition[] {
+    switch (piece.type) {
+      case ChessTypes.PAWN:
+        return pawnPreview(position, piece, board);
+      case ChessTypes.KNIGHT:
+        return knightPreview(position, piece, board);
+      case ChessTypes.BISHOP:
+        return bishopPreview(position, piece, board);
+      case ChessTypes.ROOK:
+        return rookPreview(position, piece, board);
+      case ChessTypes.QUEEN:
+        return queenPreview(position, piece, board);
+      case ChessTypes.KING:
+        return kingPreview(position, piece, board);
+    }
   }
 }

@@ -1,5 +1,10 @@
 import { MoveList } from "../ChessConst";
-import { ValidPieceProps } from "../Interface";
+import {
+  BoardContent,
+  GridPosition,
+  PieceProps,
+  ValidPieceProps,
+} from "../Interface";
 import { isBlocking, isValidEnemy } from "../Rules/Function";
 
 export function rookMove({
@@ -48,4 +53,56 @@ export function rookMove({
     }
   }
   return MoveList.INVALID;
+}
+
+export function rookPreview(
+  currentPosition: GridPosition,
+  piece: PieceProps,
+  board: Array<BoardContent>
+) {
+  const possibleMove = [];
+  const side = piece.side;
+  const moveOffsets = [
+    { x: 1, y: 0 },
+    { x: -1, y: 0 },
+    { x: 0, y: 1 },
+    { x: 0, y: -1 },
+  ];
+
+  for (const offset of moveOffsets) {
+    let newX = currentPosition.x + offset.x;
+    let newY = currentPosition.y + offset.y;
+
+    while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+      const targetPosition = { x: newX, y: newY };
+      const isBlocked = isBlocking({
+        currentPosition: targetPosition,
+        board,
+        side,
+      });
+      const validEnemy = isValidEnemy({
+        currentPosition: targetPosition,
+        board,
+        side,
+      });
+
+      if (isBlocked) {
+        if (validEnemy) {
+          possibleMove.push(targetPosition);
+        }
+        break;
+      }
+
+      possibleMove.push(targetPosition);
+
+      if (validEnemy) {
+        break;
+      }
+
+      newX += offset.x;
+      newY += offset.y;
+    }
+  }
+
+  return possibleMove;
 }

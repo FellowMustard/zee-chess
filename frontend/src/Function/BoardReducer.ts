@@ -34,6 +34,7 @@ export const boardReducers = (
             tile: horiAxis[rows] + vertAxis[vertAxis.length - (cols + 1)],
             isWhiteTile: (rows + cols + 2) % 2 === 0,
             position: { x: cols, y: rows },
+            preview: false,
             piece: pieceData
               ? {
                   image: pieceData.image,
@@ -92,6 +93,23 @@ export const boardReducers = (
       boardData[checkArrayNumber(pawnX, pawnY)].piece = promotedPiece;
 
       return { ...state, board: boardData };
+
+    case BoardActionTypes.ADDING_PREVIEW:
+      const { x: previewX, y: previewY } = action.payload;
+      boardData = [...state.board];
+      boardData[checkArrayNumber(previewX, previewY)].preview = true;
+      return { ...state, board: boardData };
+
+    case BoardActionTypes.CLEAR_PREVIEW:
+      boardData = [...state.board];
+      const clearedPreview = boardData.map((data, ...rest) => {
+        if (data.preview) {
+          data.preview = false;
+        }
+        return data;
+      });
+
+      return { ...state, board: clearedPreview };
 
     default:
       return state;

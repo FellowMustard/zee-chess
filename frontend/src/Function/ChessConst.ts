@@ -18,6 +18,8 @@ export enum BoardActionTypes {
   ADD_ENPASSANT = "ADD_ENPASSANT",
   CLEAR_ENPASSANT = "CLEAR_ENPASSANT",
   PROMOTION = "PROMOTION",
+  ADDING_PREVIEW = "ADDING_PREVIEW",
+  CLEAR_PREVIEW = "CLEAR_PREVIEW",
 }
 
 export enum PromotionActionTypes {

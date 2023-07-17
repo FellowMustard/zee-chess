@@ -8,13 +8,14 @@ const Tile = ({
   movePiece,
   placePiece,
   position,
+  preview,
   piece,
 }: TileProps) => {
   return (
     <div
       id={titleId}
-      className={`chess-tile ${isWhiteTile ? "white" : "black"}`}
-      onMouseDown={(e) => grabPiece(e)}
+      className={`chess-tile ${isWhiteTile ? "white" : "black"} `}
+      onMouseDown={(event) => grabPiece({ event, position, piece })}
       onMouseMove={(e) => movePiece(e)}
       onMouseUp={(event) => placePiece({ event, position, piece })}
     >
@@ -24,6 +25,7 @@ const Tile = ({
           style={{ backgroundImage: `url(${ChessImages[piece.image]})` }}
         />
       )}
+      {preview && <div className={`preview ${piece ? "kill" : ""} `} />}
     </div>
   );
 };
